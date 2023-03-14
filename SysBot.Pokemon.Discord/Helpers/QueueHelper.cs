@@ -21,7 +21,7 @@ namespace SysBot.Pokemon.Discord
 
             try
             {
-                const string helper = "I've added you to the queue! I'll message you here when your trade is starting.";
+                const string helper = "Tu es maintenant en file d'attente ! Je t'enverrai un message privé lorsque ce sera ton tour.";
                 IUserMessage test = await trader.SendMessageAsync(helper).ConfigureAwait(false);
 
                 // Try adding
@@ -30,7 +30,7 @@ namespace SysBot.Pokemon.Discord
                 // Notify in channel
                 await context.Channel.SendMessageAsync(msg).ConfigureAwait(false);
                 // Notify in PM to mirror what is said in the channel.
-                await trader.SendMessageAsync($"{msg}\nYour trade code will be **{code:0000 0000}**.").ConfigureAwait(false);
+                await trader.SendMessageAsync($"{msg}\nTon code pour l'échange sera : **{code:0000 0000}**.").ConfigureAwait(false);
 
                 // Clean Up
                 if (result)
@@ -73,7 +73,7 @@ namespace SysBot.Pokemon.Discord
 
             if (added == QueueResultAdd.AlreadyInQueue)
             {
-                msg = "Sorry, you are already in the queue.";
+                msg = "Désolé, tu es déjà dans la file d'attente. Tu peux utiliser la commande $qc pour annuler.";
                 return false;
             }
 
@@ -81,18 +81,18 @@ namespace SysBot.Pokemon.Discord
 
             var ticketID = "";
             if (TradeStartModule<T>.IsStartChannel(context.Channel.Id))
-                ticketID = $", unique ID: {detail.ID}";
+                ticketID = $", identifiant de ton échange : {detail.ID}";
 
             var pokeName = "";
             if (t == PokeTradeType.Specific && pk.Species != 0)
-                pokeName = $" Receiving: {(Species)pk.Species}.";
-            msg = $"{user.Mention} - Added to the {type} queue{ticketID}. Current Position: {position.Position}.{pokeName}";
+                pokeName = $" Pokémon demandé : {(Species)pk.Species}.";
+            msg = $"{user.Mention} - Tu es maintenant dans la file pour : {type}{ticketID}. Position dans la file : {position.Position}.{pokeName}";
 
             var botct = Info.Hub.Bots.Count;
             if (position.Position > botct)
             {
                 var eta = Info.Hub.Config.Queues.EstimateDelay(position.Position, botct);
-                msg += $" Estimated: {eta:F1} minutes.";
+                msg += $" Temps d'attente : environ {eta:F1} minutes.";
             }
             return true;
         }
@@ -124,7 +124,7 @@ namespace SysBot.Pokemon.Discord
                 case DiscordErrorCode.CannotSendMessageToUser:
                     {
                         // The user either has DMs turned off, or Discord thinks they do.
-                        message = context.User == trader ? "You must enable private messages in order to be queued!" : "The mentioned user must enable private messages in order for them to be queued!";
+                        message = context.User == trader ? "Tu dois autoriser la réception de messages privés pour rejoindre la file !" : "The mentioned user must enable private messages in order for them to be queued!";
                     }
                     break;
                 default:
