@@ -218,11 +218,11 @@ namespace SysBot.Pokemon
             {
                 detail.IsRetry = true;
                 Hub.Queues.Enqueue(type, detail, Math.Min(priority, PokeTradePriorities.Tier2));
-                detail.SendNotification(this, "Oops! Something happened. I'll requeue you for another attempt.");
+                detail.SendNotification(this, "Oops! Une erreur est survenue. Je retente l'échange une nouvelle fois.");
             }
             else
             {
-                detail.SendNotification(this, $"Oops! Something happened. Canceling the trade: {result}.");
+                detail.SendNotification(this, $"Oops! Une erreur est survenue, l'échange est annulé : {result}.");
                 detail.TradeCanceled(this, result);
             }
         }
@@ -359,7 +359,7 @@ namespace SysBot.Pokemon
                 return PokeTradeResult.TrainerTooSlow;
             }
 
-            poke.SendNotification(this, $"Found Link Trade partner: {tradePartner.TrainerName}. Waiting for a Pokémon...");
+            poke.SendNotification(this, $"J'ai trouvé un partenaire d'échange : {tradePartner.TrainerName}. J'attends que tu me propose un Pokémon...");
 
             if (poke.Type == PokeTradeType.Dump)
             {
@@ -824,7 +824,7 @@ namespace SysBot.Pokemon
         private async Task<(PK9 toSend, PokeTradeResult check)> HandleClone(SAV9SV sav, PokeTradeDetail<PK9> poke, PK9 offered, byte[] oldEC, CancellationToken token)
         {
             if (Hub.Config.Discord.ReturnPKMs)
-                poke.SendNotification(this, offered, "Here's what you showed me!");
+                poke.SendNotification(this, offered, "Voici le Pokémon que tu m'as montré !");
 
             var la = new LegalityAnalysis(offered);
             if (!la.Valid)
@@ -835,7 +835,7 @@ namespace SysBot.Pokemon
 
                 var report = la.Report();
                 Log(report);
-                poke.SendNotification(this, "This Pokémon is not legal per PKHeX's legality checks. I am forbidden from cloning this. Exiting trade.");
+                poke.SendNotification(this, "Ce Pokémon n'est pas légal. Je ne peux donc pas le cloner. Annulation du clonage.");
                 poke.SendNotification(this, report);
 
                 return (offered, PokeTradeResult.IllegalTrade);
@@ -845,14 +845,14 @@ namespace SysBot.Pokemon
             if (Hub.Config.Legality.ResetHOMETracker)
                 clone.Tracker = 0;
 
-            poke.SendNotification(this, $"**Cloned your {GameInfo.GetStrings(1).Species[clone.Species]}!**\nNow press B to cancel your offer and trade me a Pokémon you don't want.");
+            poke.SendNotification(this, $"**J'ai bien cloné ton {GameInfo.GetStrings(1).Species[clone.Species]}!**\nAppuie maintenant sur B pour annuler, puis échange moi un Pokémon que tu ne veux plus !");
             Log($"Cloned a {GameInfo.GetStrings(1).Species[clone.Species]}. Waiting for user to change their Pokémon...");
 
             // Separate this out from WaitForPokemonChanged since we compare to old EC from original read.
             var partnerFound = await ReadUntilChanged(TradePartnerOfferedOffset, oldEC, 15_000, 0_200, false, true, token).ConfigureAwait(false);
             if (!partnerFound)
             {
-                poke.SendNotification(this, "**HEY CHANGE IT NOW OR I AM LEAVING!!!**");
+                poke.SendNotification(this, "**HEY ! Change vite ton Pokémon ou je vais devoir annuler le clonage !**");
                 // They get one more chance.
                 partnerFound = await ReadUntilChanged(TradePartnerOfferedOffset, oldEC, 15_000, 0_200, false, true, token).ConfigureAwait(false);
             }
