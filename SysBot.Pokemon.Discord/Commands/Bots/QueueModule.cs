@@ -137,10 +137,10 @@ namespace SysBot.Pokemon.Discord
         {
             return result switch
             {
-                QueueResultRemove.CurrentlyProcessing => "Looks like you're currently being processed! Did not remove from all queues.",
-                QueueResultRemove.CurrentlyProcessingRemoved => "Looks like you're currently being processed!",
-                QueueResultRemove.Removed => "Removed you from the queue.",
-                _ => "Sorry, you are not currently in the queue.",
+                QueueResultRemove.CurrentlyProcessing => "Impossible de te retirer de la file car ton échange a déjà commencé.",
+                QueueResultRemove.CurrentlyProcessingRemoved => "On dirait que ton échange a déjà commencé.",
+                QueueResultRemove.Removed => "Supprimé de la file d'attente.",
+                _ => "Désolé, tu es déjà dans la file d'attente. Tu peux utiliser la commande $qc pour annuler.",
             };
         }
     }
