@@ -116,18 +116,18 @@ namespace SysBot.Pokemon.Twitch
 
             if (added == QueueResultAdd.AlreadyInQueue)
             {
-                msg = $"@{name}: Sorry, you are already in the queue.";
+                msg = $"@{name}: Désolé, tu es déjà dans la file d'attente.";
                 return false;
             }
 
             var position = Info.CheckPosition(userID, type);
-            msg = $"@{name}: Added to the {type} queue, unique ID: {detail.ID}. Current Position: {position.Position}";
+            msg = $"@{name}: Tu es maintenant dans la file pour : {type}, identifiant l'échange : ID{detail.ID}. Position dans la file : {position.Position}";
 
             var botct = Info.Hub.Bots.Count;
             if (position.Position > botct)
             {
                 var eta = Info.Hub.Config.Queues.EstimateDelay(position.Position, botct);
-                msg += $". Estimated: {eta:F1} minutes.";
+                msg += $". Temps d'attente : environ {eta:F1} minutes.";
             }
             return true;
         }
@@ -238,7 +238,7 @@ namespace SysBot.Pokemon.Twitch
 
                 case "tt":
                     return Info.Hub.Queues.Info.ToggleQueue()
-                        ? "Users are now able to join the trade queue."
+                        ? "La file d'attente est maintenant ouverte !"
                         : "Changed queue settings: **Users CANNOT join the queue until it is turned back on.**";
 
                 case "tcu":
