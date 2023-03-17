@@ -121,7 +121,7 @@ namespace SysBot.Pokemon.Twitch
             }
 
             var position = Info.CheckPosition(userID, type);
-            msg = $"@{name}: Tu es maintenant dans la file pour : {type}, identifiant l'échange : ID{detail.ID}. Position dans la file : {position.Position}";
+            msg = $"@{name}: Tu es maintenant dans la file pour : {type}, identifiant de l'échange : ID{detail.ID}. Position dans la file : {position.Position}";
 
             var botct = Info.Hub.Bots.Count;
             if (position.Position > botct)
