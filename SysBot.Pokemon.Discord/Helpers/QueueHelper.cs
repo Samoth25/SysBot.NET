@@ -81,7 +81,7 @@ namespace SysBot.Pokemon.Discord
 
             var ticketID = "";
             if (TradeStartModule<T>.IsStartChannel(context.Channel.Id))
-                ticketID = $", identifiant de ton échange : {detail.ID}";
+                ticketID = $", identifiant l'échange : ID{detail.ID}";
 
             var pokeName = "";
             if (t == PokeTradeType.Specific && pk.Species != 0)
