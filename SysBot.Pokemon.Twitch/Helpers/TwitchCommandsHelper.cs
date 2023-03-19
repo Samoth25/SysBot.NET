@@ -24,7 +24,7 @@ namespace SysBot.Pokemon.Twitch
             var template = AutoLegalityWrapper.GetTemplate(set);
             if (template.Species < 1)
             {
-                msg = $"Annulation de ta commande, @{username}: Ce Pokémon n'existe pas ou n'est pas écrit en Anglais.";
+                msg = $"Annulation de ta commande, @{username}: Commande incorrecte : vérifie l'orthographe du Pokémon (en Anglais) ainsi que les paramètres demandés. Attention : les espaces et majuscules sont importants !";
                 return false;
             }
 
@@ -58,7 +58,7 @@ namespace SysBot.Pokemon.Twitch
                     }
                 }
 
-                var reason = result == "Timeout" ? "Set took too long to generate." : "Unable to legalize the Pokémon.";
+                var reason = result == "Timeout" ? "Set took too long to generate." : "Le Pokémon demandé n'est pas légal.";
                 msg = $"Skipping trade, @{username}: {reason}";
             }
             catch (Exception ex)
