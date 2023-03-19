@@ -239,7 +239,7 @@ namespace SysBot.Pokemon.Twitch
                 case "tt":
                     return Info.Hub.Queues.Info.ToggleQueue()
                         ? "La file d'attente est maintenant ouverte !"
-                        : "Changed queue settings: **Users CANNOT join the queue until it is turned back on.**";
+                        : "La file d'attente est temporairement fermée.";
 
                 case "tcu":
                     return TwitchCommandsHelper<T>.ClearTrade(args);
