@@ -66,7 +66,7 @@ namespace SysBot.Pokemon.Discord
                 pkm = EntityConverter.ConvertToType(pkm, typeof(T), out _) ?? pkm;
                 if (pkm is not T pk || !la.Valid)
                 {
-                    var reason = result == "Timeout" ? $"That {spec} set took too long to generate." : result == "VersionMismatch" ? "Request refused: version mismatch." : $"Je n'ai pas réussi à créer de {spec} d'après ce set.";
+                    var reason = result == "Timeout" ? $"That {spec} set took too long to generate." : result == "VersionMismatch" ? "Request refused: PKHeX and Auto-Legality Mod version mismatch." : $"I wasn't able to create a {spec} from that set.";
                     var imsg = $"Oops! {reason}";
                     if (result == "Failed")
                         imsg += $"\n{AutoLegalityWrapper.GetLegalizationHint(template, sav, pkm)}";
@@ -160,7 +160,7 @@ namespace SysBot.Pokemon.Discord
             var attachment = Context.Message.Attachments.FirstOrDefault();
             if (attachment == default)
             {
-                await ReplyAsync("Aucun fichier PKHeX n'a été fourni !").ConfigureAwait(false);
+                await ReplyAsync("No attachment provided!").ConfigureAwait(false);
                 return;
             }
 
@@ -168,7 +168,7 @@ namespace SysBot.Pokemon.Discord
             var pk = GetRequest(att);
             if (pk == null)
             {
-                await ReplyAsync("Ce fichier n'est pas compatible avec ce module.").ConfigureAwait(false);
+                await ReplyAsync("Attachment provided is not compatible with this module!").ConfigureAwait(false);
                 return;
             }
 
@@ -191,14 +191,14 @@ namespace SysBot.Pokemon.Discord
         {
             if (!pk.CanBeTraded())
             {
-                await ReplyAsync("Le surnom ou le DO de ce Pokémon n'est pas permis.").ConfigureAwait(false);
+                await ReplyAsync("Provided Pokémon content is blocked from trading!").ConfigureAwait(false);
                 return;
             }
 
             var la = new LegalityAnalysis(pk);
             if (!la.Valid)
             {
-                await ReplyAsync($"{typeof(T).Name} Le fichier PKHeX de ce Pokémon n'est pas légal.").ConfigureAwait(false);
+                await ReplyAsync($"{typeof(T).Name} attachment is not legal, and cannot be traded!").ConfigureAwait(false);
                 return;
             }
 
