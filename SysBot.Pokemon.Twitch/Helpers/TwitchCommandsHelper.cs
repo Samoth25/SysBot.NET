@@ -53,7 +53,7 @@ namespace SysBot.Pokemon.Twitch
                         var tq = new TwitchQueue<T>(pk, new PokeTradeTrainerInfo(display, mUserId), username, sub);
                         TwitchBot<T>.QueuePool.RemoveAll(z => z.UserName == username); // remove old requests if any
                         TwitchBot<T>.QueuePool.Add(tq);
-                        msg = $"@{username} - ta commande est enregistrée ! Merci de m'envoyer le code d'échange de ton choix à 8 chiffres en chuchotement (MP) ! Fais vite ou ta commande sera annulée !";
+                        msg = $"@{username} - ta commande est enregistrée ! Merci de m'envoyer le code d'échange de ton choix à 8 chiffres en chuchotement (Clique sur mon pseudo > Chuchotter) ! Fais vite ou ta commande sera annulée !";
                         return true;
                     }
                 }
